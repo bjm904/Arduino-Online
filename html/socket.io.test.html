@@ -1,0 +1,107 @@
+<html>
+<head>
+<title>Socket.io Test Client</title>
+<meta name="viewport" content="width=device-width">
+<script src="socket.io.js"></script>
+<script>
+var status="000000000000";
+var socket = io.connect('ws://bjm904.bjm904.com:9789');
+socket.on("status", function(data){
+	var parsedData=JSON.parse(data);
+	if(parsedData.status) status=parsedData.status;
+	update();
+});
+String.prototype.replaceAt=function(index, character) {
+	return this.substr(0, index) + character + this.substr(index+1);
+}
+function update(){
+	for(var i=0;i<12;i++){
+		document.getElementById(i).value=(status[i]==1)?"On":"Off";
+	}
+}
+function toggle(num){
+	status=status.replaceAt(num, (status[num]==1)?0:1);
+	socket.emit("status", JSON.stringify({status:status}));
+}
+//r1 g1 r2 g2 r3 g3 r4 g4 top center ext test
+var array1=[
+	"100000000010",
+	"001000000010",
+	"000010000010",
+	"000000100010",
+];
+var array2=[
+	"110000000010",
+	"001100000010",
+	"000011000010",
+	"000000110010",
+];
+var array3=[
+	"111111110000",
+	"000000001110",
+];
+var array4=[
+	"101010100010",
+	"010101010010",
+];
+var array5=[
+	"110000000010",
+	"001100000010",
+	"000011000010",
+	"000000110010",
+];
+var array6=[
+	"100000000000",
+	"010000000000",
+	"001000000000",
+	"000100000000",
+	"000010000000",
+	"000001000000",
+	"000000100000",
+	"000000010000",
+	"000000001000",
+	"000000000100",
+	"000000000010",
+	"000000000001"
+];
+var array=array1;
+var speed=300;
+function play(){
+	for(var i=0;i<array.length;i++){
+		doTimeout(i)
+	}
+	setTimeout(function(){
+		play();
+	},speed*array.length);
+}
+function doTimeout(i){
+	setTimeout(function(){
+		socket.emit("status", JSON.stringify({status:array[i]}));
+	},speed*i);
+}
+</script>
+<style>
+input{
+	width:100%;
+	height:7.5%;
+}
+</style>
+</head>
+<body>
+This client connects directly to the Socket.io server that the Arduino connects to
+<input type="button" id="0" onclick="toggle(0)"></input><br>
+<input type="button" id="1" onclick="toggle(1)"></input><br>
+<input type="button" id="2" onclick="toggle(2)"></input><br>
+<input type="button" id="3" onclick="toggle(3)"></input><br>
+<input type="button" id="4" onclick="toggle(4)"></input><br>
+<input type="button" id="5" onclick="toggle(5)"></input><br>
+<input type="button" id="6" onclick="toggle(6)"></input><br>
+<input type="button" id="7" onclick="toggle(7)"></input><br>
+<input type="button" id="8" onclick="toggle(8)"></input><br>
+<input type="button" id="9" onclick="toggle(9)"></input><br>
+<input type="button" id="10" onclick="toggle(10)"></input><br>
+<input type="button" id="11" onclick="toggle(11)"></input><br>
+<br>
+<input type="button" id="play" value="Play" onclick="play()"></input>
+</body>
+</html>
