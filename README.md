@@ -1,5 +1,5 @@
 #Controlling Arduino Pins Through Websockets
-*This is a very personalized project and you probably wont be able to get it to work. However if you are interesting, please contact me*
+*This is a very personalized project and you probably wont be able to get it to work. However if you are interested, please contact me*
 ##SocketIOServer
 This is the server that the Arduino talks to using socket.io. It uses 11 pins, more can be added but the C++ code will have to be modified. There is a test page in /html that talks directly to this as well. Clients are not meant to talk directly to this server as there is no rate limiting or securities whatsoever.
 
